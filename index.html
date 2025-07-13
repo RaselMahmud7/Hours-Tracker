@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,24 +12,42 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex justify-center items-start p-4 sm:p-8 font-sans text-white transition duration-300 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-gray-900 dark:to-gray-800">
-  <div class="max-w-5xl w-full bg-white/10 dark:bg-white/5 backdrop-blur-lg rounded-3xl shadow-lg border border-white/30 p-6 sm:p-8">
-    <h2 class="text-3xl font-bold mb-8 text-center drop-shadow-md text-white">Work Hours Tracker</h2>
+<body class="min-h-screen flex justify-center items-start p-4 font-sans text-white bg-gradient-to-br from-blue-500 to-blue-700">
 
-    <div id="summaryContainer" class="mb-6 bg-white/20 text-white rounded-xl p-5 text-center font-semibold drop-shadow-md whitespace-pre-line"></div>
+  <!-- Login/Register Form -->
+  <div id="loginForm" class="w-full max-w-md bg-white/10 backdrop-blur rounded-3xl p-6 shadow-lg mt-20">
+    <h2 class="text-2xl font-bold text-center mb-4 text-white">Login / Register</h2>
+    <form class="space-y-4">
+      <div>
+        <label for="username" class="block mb-1 text-white font-semibold">Username:</label>
+        <input type="text" id="username" class="w-full px-4 py-2 rounded-xl text-gray-900" required />
+      </div>
+      <div>
+        <label for="password" class="block mb-1 text-white font-semibold">Password:</label>
+        <input type="password" id="password" class="w-full px-4 py-2 rounded-xl text-gray-900" required />
+      </div>
+      <button type="submit" class="w-full bg-white/20 hover:bg-white/30 transition rounded-xl py-2 font-bold text-white shadow">Enter</button>
+    </form>
+  </div>
 
-    <form id="entryForm" class="space-y-5 max-w-lg mx-auto">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <!-- App Section -->
+  <div id="appSection" class="hidden w-full max-w-4xl mt-10 bg-white/10 backdrop-blur rounded-3xl p-6 shadow-lg">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold drop-shadow text-white">Work Hours Tracker</h2>
+      <div class="flex items-center gap-4">
+        <span class="text-white font-semibold">👤 <span id="userDisplay"></span></span>
+        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white font-bold">Logout</button>
+      </div>
+    </div>
+
+    <div id="summaryContainer" class="mb-6 bg-white/10 text-white rounded-xl p-4 text-center font-semibold whitespace-pre-line"></div>
+
+    <form id="entryForm" class="space-y-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <div>
           <label for="date" class="block mb-1 font-semibold text-white">Date:</label>
           <input type="date" id="date" class="w-full rounded-xl px-4 py-2 text-gray-900" />
         </div>
-        <div>
-          <label for="location" class="block mb-1 font-semibold text-white">Location:</label>
-          <input type="text" id="location" placeholder="Enter location" class="w-full rounded-xl px-4 py-2 text-gray-900" />
-        </div>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label for="startTime" class="block mb-1 font-semibold text-white">Start Time:</label>
           <input type="time" id="startTime" class="w-full rounded-xl px-4 py-2 text-gray-900" />
@@ -42,261 +60,37 @@
           <label for="breakMinutes" class="block mb-1 font-semibold text-white">Break (minutes):</label>
           <input type="number" id="breakMinutes" value="30" min="0" class="w-full rounded-xl px-4 py-2 text-gray-900" />
         </div>
+        <div class="md:col-span-2">
+          <label for="location" class="block mb-1 font-semibold text-white">Location:</label>
+          <input type="text" id="location" placeholder="Enter location" class="w-full rounded-xl px-4 py-2 text-gray-900" />
+        </div>
       </div>
-      <button type="submit" class="w-full bg-white/30 hover:bg-white/50 transition rounded-xl py-3 font-bold text-white shadow-md">Add Entry</button>
-      <p id="error" class="text-red-400 font-semibold mt-2 min-h-[1.5rem] text-center"></p>
+      <button type="submit" class="w-full bg-white/20 hover:bg-white/40 transition rounded-xl py-3 font-bold text-white shadow">Add Entry</button>
+      <p id="error" class="text-red-400 font-semibold mt-2 min-h-[1.5rem]"></p>
     </form>
 
-    <div class="overflow-x-auto mt-8">
-      <table id="entriesTable" class="w-full text-white dark:text-gray-100 rounded-xl overflow-hidden hidden shadow-md">
-        <thead class="bg-white/20 backdrop-blur-md">
-          <tr>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Date</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Week #</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Start Time</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">End Time</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Break (min)</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Location</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Total Hours</th>
-            <th class="p-3 border border-white/40 whitespace-nowrap">Action</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white/10 text-white" id="entriesBody"></tbody>
-      </table>
-    </div>
+    <table id="entriesTable" class="w-full mt-8 text-white rounded-xl overflow-hidden hidden shadow-md">
+      <thead class="bg-white/10">
+        <tr>
+          <th class="p-2 border border-white/30">Date</th>
+          <th class="p-2 border border-white/30">Week</th>
+          <th class="p-2 border border-white/30">Start</th>
+          <th class="p-2 border border-white/30">End</th>
+          <th class="p-2 border border-white/30">Break</th>
+          <th class="p-2 border border-white/30">Location</th>
+          <th class="p-2 border border-white/30">Working Hours</th>
+          <th class="p-2 border border-white/30">Action</th>
+        </tr>
+      </thead>
+      <tbody id="entriesBody" class="bg-white/5"></tbody>
+    </table>
 
-    <div id="totalHoursContainer" class="mt-6 max-w-lg mx-auto text-white bg-white/20 rounded-xl p-5 font-semibold whitespace-pre-line hidden shadow-md"></div>
-
-    <button id="exportPdfBtn" class="mt-6 w-full bg-white/30 hover:bg-white/50 transition rounded-xl py-3 font-bold text-white shadow-md hidden">Export to PDF</button>
+    <button id="exportPdfBtn" class="mt-6 w-full bg-white/20 hover:bg-white/40 transition rounded-xl py-3 font-bold text-white shadow-md hidden">Export to PDF</button>
   </div>
 
-  <!-- jsPDF and autotable -->
-  <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="https://unpkg.com/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
-
-  <script>
-    const { jsPDF } = window.jspdf;
-    const form = document.getElementById('entryForm');
-    const dateInput = document.getElementById('date');
-    const startTimeInput = document.getElementById('startTime');
-    const endTimeInput = document.getElementById('endTime');
-    const breakInput = document.getElementById('breakMinutes');
-    const locationInput = document.getElementById('location');
-    const errorDiv = document.getElementById('error');
-    const entriesTable = document.getElementById('entriesTable');
-    const entriesBody = document.getElementById('entriesBody');
-    const summaryContainer = document.getElementById('summaryContainer');
-    const totalHoursContainer = document.getElementById('totalHoursContainer');
-    const exportPdfBtn = document.getElementById('exportPdfBtn');
-    let entries = [];
-
-    window.onload = () => {
-      const saved = localStorage.getItem('workEntries');
-      if (saved) {
-        entries = JSON.parse(saved);
-        updateTable();
-      }
-      updateSummaryAndTotals();
-    };
-
-    function saveEntries() {
-      localStorage.setItem('workEntries', JSON.stringify(entries));
-    }
-
-    function parseTime(t) {
-      const [h, m] = t.split(':').map(Number);
-      return h * 60 + m;
-    }
-
-    function formatHours(minutes) {
-      return (minutes / 60).toFixed(2);
-    }
-
-    function getWeekNumber(d) {
-      d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-      d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-      const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-      return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
-    }
-
-    function getMonthName(monthIndex) {
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      return months[monthIndex] || "";
-    }
-
-    function updateTable() {
-      entriesBody.innerHTML = '';
-      entries.forEach((entry, index) => {
-        const weekNum = getWeekNumber(new Date(entry.date));
-        const tr = document.createElement('tr');
-        tr.className = `border border-white/30 text-white ${index % 2 === 0 ? 'bg-white/10' : 'bg-white/5'}`;
-        tr.innerHTML = `
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${entry.date}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${weekNum}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${entry.startTime}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${entry.endTime}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${entry.breakMinutes}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${entry.location || '-'}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">${formatHours(entry.totalMinutes)}</td>
-          <td class="p-2 border border-white/30 text-center whitespace-nowrap">
-            <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded transition" data-index="${index}" aria-label="Delete Entry">Delete</button>
-          </td>
-        `;
-        entriesBody.appendChild(tr);
-      });
-
-      const hasEntries = entries.length > 0;
-      entriesTable.classList.toggle('hidden', !hasEntries);
-      exportPdfBtn.classList.toggle('hidden', !hasEntries);
-      totalHoursContainer.classList.toggle('hidden', !hasEntries);
-
-      document.querySelectorAll('button[data-index]').forEach(btn => {
-        btn.onclick = () => {
-          const idx = parseInt(btn.getAttribute('data-index'));
-          entries.splice(idx, 1);
-          saveEntries();
-          updateTable();
-          updateSummaryAndTotals();
-        };
-      });
-    }
-
-    function updateSummaryAndTotals() {
-      const now = new Date();
-      const weekNumber = getWeekNumber(now);
-      const monthName = getMonthName(now.getMonth());
-
-      if (entries.length === 0) {
-        summaryContainer.textContent = `Week Number: ${weekNumber}\nMonth: ${monthName}\n\nNo entries yet.`;
-        totalHoursContainer.textContent = '';
-        totalHoursContainer.classList.add('hidden');
-        return;
-      }
-
-      // Calculate totals per location & grand total
-      const locationTotals = {};
-      let grandTotalMinutes = 0;
-      entries.forEach(e => {
-        if (!locationTotals[e.location]) locationTotals[e.location] = 0;
-        locationTotals[e.location] += e.totalMinutes;
-        grandTotalMinutes += e.totalMinutes;
-      });
-
-      // Also compute week & month total for summary text
-      const currentMonth = now.getMonth();
-      const currentYear = now.getFullYear();
-      let weeklyMinutes = 0;
-      let monthlyMinutes = 0;
-      entries.forEach(e => {
-        const d = new Date(e.date);
-        if (getWeekNumber(d) === weekNumber && d.getFullYear() === currentYear) {
-          weeklyMinutes += e.totalMinutes;
-        }
-        if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
-          monthlyMinutes += e.totalMinutes;
-        }
-      });
-
-      summaryContainer.textContent = `Week Number: ${weekNumber}\nMonth: ${monthName}\n\n` 
-      let totalsText = '🕒 Total Hours per Location:\n';
-      for (const [loc, mins] of Object.entries(locationTotals)) {
-        totalsText += ` - ${loc || '(No location)'}: ${formatHours(mins)} hrs\n`;
-      }
-      totalsText += `\n💼 Grand Total Hours: ${formatHours(grandTotalMinutes)} hrs`;
-
-      totalHoursContainer.textContent = totalsText;
-      totalHoursContainer.classList.remove('hidden');
-    }
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      errorDiv.textContent = '';
-      const date = dateInput.value;
-      const start = startTimeInput.value;
-      const end = endTimeInput.value;
-      const breakMinutes = parseInt(breakInput.value, 10);
-      const location = locationInput.value.trim();
-      if (!date || !start || !end) {
-        errorDiv.textContent = 'Please fill in date, start time, and end time.';
-        return;
-      }
-      if (breakMinutes < 0) {
-        errorDiv.textContent = 'Break minutes must be zero or positive.';
-        return;
-      }
-      const startMins = parseTime(start);
-      const endMins = parseTime(end);
-      if (endMins <= startMins) {
-        errorDiv.textContent = 'End time must be after start time.';
-        return;
-      }
-      if (breakMinutes >= (endMins - startMins)) {
-        errorDiv.textContent = 'Break must be less than total shift duration.';
-        return;
-      }
-      const totalMinutes = endMins - startMins - breakMinutes;
-      entries.push({ date, startTime: start, endTime: end, breakMinutes, location, totalMinutes });
-      saveEntries();
-      dateInput.value = '';
-      startTimeInput.value = '';
-      endTimeInput.value = '';
-      breakInput.value = '30';
-      locationInput.value = '';
-      updateTable();
-      updateSummaryAndTotals();
-    });
-
-    exportPdfBtn.onclick = () => {
-      if (entries.length === 0) return;
-
-      const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.text("Work Hours Report", 14, 20);
-
-      const headers = [["Date", "Week Number", "Start Time", "End Time", "Break (min)", "Location", "Total Hours"]];
-      const data = entries.map(e => [
-        e.date,
-        getWeekNumber(new Date(e.date)),
-        e.startTime,
-        e.endTime,
-        e.breakMinutes.toString(),
-        e.location || '-',
-        formatHours(e.totalMinutes)
-      ]);
-
-      doc.autoTable({ head: headers, body: data, startY: 30 });
-
-      const locationTotals = {};
-      let grandTotalMinutes = 0;
-      entries.forEach(e => {
-        if (!locationTotals[e.location]) locationTotals[e.location] = 0;
-        locationTotals[e.location] += e.totalMinutes;
-        grandTotalMinutes += e.totalMinutes;
-      });
-
-      let finalY = doc.lastAutoTable.finalY || 40;
-      finalY += 10;
-
-      doc.setFontSize(14);
-      doc.text("Total Hours per Location:", 14, finalY);
-      finalY += 8;
-      doc.setFontSize(12);
-
-      for (const [loc, mins] of Object.entries(locationTotals)) {
-        doc.text(`- ${loc || '(No location)'}: ${formatHours(mins)} hrs`, 14, finalY);
-        finalY += 7;
-      }
-
-      finalY += 6;
-      doc.setFontSize(14);
-      doc.text(`Grand Total Hours: ${formatHours(grandTotalMinutes)} hrs`, 14, finalY);
-
-      doc.setFontSize(10);
-      doc.setTextColor(150);
-      doc.text("Made by M Rasel Mahmud", 14, doc.internal.pageSize.height - 10);
-
-      doc.save(`work_hours_${Date.now()}.pdf`);
-    };
-  </script>
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
